@@ -1,0 +1,35 @@
+package com.example.practicafirebase.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.ui.NavDisplay
+import com.example.practicafirebase.ui.screens.HomeScreen
+import com.example.practicafirebase.ui.screens.LoginScreen
+import com.example.practicafirebase.ui.screens.RegisterScreen
+
+@Composable
+fun Navigation() {
+    val backStack: NavBackStack<NavKey> = rememberNavBackStack(Routes.Login)
+
+    NavDisplay(
+        backStack = backStack,
+        onBack = { backStack.removeLastOrNull() },
+        entryProvider = { key ->
+            when (key) {
+                is Routes.Login -> NavEntry(key) {
+                    LoginScreen()
+                }
+                is Routes.Register -> NavEntry(key) {
+                    RegisterScreen()
+                }
+                is Routes.Home -> NavEntry(key) {
+                    HomeScreen()
+                }
+                else -> NavEntry(key = Routes.Error){}
+            }
+        }
+    )
+}
