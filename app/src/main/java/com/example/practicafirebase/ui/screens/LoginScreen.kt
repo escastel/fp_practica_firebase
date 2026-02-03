@@ -8,12 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,8 +31,8 @@ fun LoginScreen() {
             .padding(horizontal = 24.dp)
     ) {
         Text(
-            text = "Login",
-            fontSize = 32.sp,
+            text = stringResource(R.string.title_login),
+            fontSize = 32.sp
         )
 
         Spacer(modifier = Modifier.height(24.dp))
