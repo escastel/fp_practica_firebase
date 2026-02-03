@@ -17,12 +17,14 @@ import com.example.practicafirebase.ui.theme.PracticaFirebaseTheme
 
 @Composable
 fun CustomOutlinedField(
+    value: String,
+    onValueChange: (String) -> Unit,
     label: String,
     icon: Boolean
 ) {
     OutlinedTextField(
-        value = "",
-        onValueChange = {},
+        value = value,
+        onValueChange = onValueChange,
         label = { Text(text = label) },
         trailingIcon = {
             if (icon){
@@ -43,7 +45,9 @@ fun CustomOutlineField(){
     PracticaFirebaseTheme {
         CustomOutlinedField(
             label = stringResource(R.string.label_password),
-            icon = true
+            icon = true,
+            value = "",
+            onValueChange = {}
         )
     }
 }

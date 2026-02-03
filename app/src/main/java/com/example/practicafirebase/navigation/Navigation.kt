@@ -9,9 +9,10 @@ import androidx.navigation3.ui.NavDisplay
 import com.example.practicafirebase.ui.screens.HomeScreen
 import com.example.practicafirebase.ui.screens.LoginScreen
 import com.example.practicafirebase.ui.screens.RegisterScreen
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun Navigation() {
+fun Navigation(auth: FirebaseAuth) {
     val backStack: NavBackStack<NavKey> = rememberNavBackStack(Routes.Login)
 
     NavDisplay(
@@ -20,7 +21,11 @@ fun Navigation() {
         entryProvider = { key ->
             when (key) {
                 is Routes.Login -> NavEntry(key) {
-                    LoginScreen()
+                    LoginScreen(
+                        auth = auth,
+                        onLoginClick = { backStack.add(Routes.Home) },
+                        onRegisterClick = { backStack.add(Routes.Register) }
+                    )
                 }
                 is Routes.Register -> NavEntry(key) {
                     RegisterScreen()
