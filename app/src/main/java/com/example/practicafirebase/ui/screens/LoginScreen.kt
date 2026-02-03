@@ -110,11 +110,11 @@ fun LoginScreen(
             onDismissRequest = { showErrorDialog = false },
             confirmButton = {
                 Button(onClick = { showErrorDialog = false }){
-                    Text(text = "Salir")
+                    Text(text = stringResource(R.string.btn_exit))
                 }
             },
-            title = { Text(text = "Error de autentificación") },
-            text = { Text(text = "El email y/o la contraseña son incorrectas") },
+            title = { Text(text = stringResource(R.string.error_login)) },
+            text = { Text(text = stringResource(R.string.error_login_message)) },
             icon = {
                 Icon(
                     imageVector = Icons.Outlined.Close,
