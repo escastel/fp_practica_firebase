@@ -18,9 +18,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.practicafirebase.R
+import com.example.practicafirebase.ui.components.CustomButton
+import com.example.practicafirebase.ui.components.CustomOutlinedField
 import com.example.practicafirebase.ui.theme.PracticaFirebaseTheme
 
 @Composable
@@ -36,49 +40,36 @@ fun LoginScreen() {
             text = "Login",
             fontSize = 32.sp,
         )
+
         Spacer(modifier = Modifier.height(24.dp))
-        OutlinedTextField(
-            value = "",
-            onValueChange = {},
-            label = { Text(text = "Email") },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp)
+
+        CustomOutlinedField(
+            label = stringResource(R.string.label_email),
+            icon = false
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        CustomOutlinedField(
+            label = stringResource(R.string.label_password),
+            icon = true
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        CustomButton(
+            text = stringResource(R.string.btn_login),
+            onClick = {} //TODO: Autentificacion
         )
         Spacer(modifier = Modifier.height(24.dp))
-        OutlinedTextField(
-            value = "",
-            onValueChange = {},
-            label = { Text(text = "Contraseña") },
-            trailingIcon = {
-                Icon(
-                    imageVector = Icons.Default.Lock,
-                    contentDescription = ""
-                )
-            },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp)
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Button(
-            onClick = {
-            //TODO: Autentificacion
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            Text (text = "Entrar", fontSize = 18.sp)
-        }
-        Spacer(modifier = Modifier.height(24.dp))
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "¿No tienes cuenta?")
-            //TODO: Ir a la pantalla de registro
-            Text(text = "Registrate")
+            Text(text = stringResource(R.string.no_account))
+            Text(text = stringResource(R.string.btn_register)) //TODO: Ir a la pantalla de registro
         }
     }
 }
