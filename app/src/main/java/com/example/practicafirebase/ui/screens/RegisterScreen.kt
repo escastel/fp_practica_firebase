@@ -1,5 +1,6 @@
 package com.example.practicafirebase.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,16 +16,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.practicafirebase.R
 import com.example.practicafirebase.ui.components.CustomButton
 import com.example.practicafirebase.ui.components.CustomOutlinedField
-import com.example.practicafirebase.ui.theme.PracticaFirebaseTheme
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(
+    auth: FirebaseAuth,
+    onCancelClick: () -> Unit,
+    onRegisterClick: () -> Unit
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var password2 by remember { mutableStateOf("") }
@@ -71,23 +75,25 @@ fun RegisterScreen() {
 
         CustomButton(
             text = stringResource(R.string.btn_register),
-            onClick = {} //TODO: Registro
+            onClick = {
+                if (password.equals(password2)){
+                    auth.createUserWithEmailAndPassword(email, password)
+                        .addOnSuccessListener { user ->
+                            onRegisterClick()
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("Firebase", "Error en la creación de usuario ${e.message}")
+                        }
+                }
+            }
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         CustomButton(
             text = stringResource(R.string.btn_cancel),
-            onClick = {} // TODO: Navegar al login
+            onClick = onCancelClick
         )
 
-    }
-}
-
-@Preview (showBackground = true)
-@Composable
-fun RegisterScreenPreview() {
-    PracticaFirebaseTheme {
-        RegisterScreen()
     }
 }

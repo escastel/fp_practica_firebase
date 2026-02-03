@@ -23,12 +23,16 @@ fun Navigation(auth: FirebaseAuth) {
                 is Routes.Login -> NavEntry(key) {
                     LoginScreen(
                         auth = auth,
-                        onLoginClick = { backStack.add(Routes.Home) },
+                        onEnterClick = { backStack.add(Routes.Home) },
                         onRegisterClick = { backStack.add(Routes.Register) }
                     )
                 }
                 is Routes.Register -> NavEntry(key) {
-                    RegisterScreen()
+                    RegisterScreen(
+                        auth = auth,
+                        onCancelClick = { backStack.removeLastOrNull() },
+                        onRegisterClick = { backStack.removeLastOrNull() }
+                    )
                 }
                 is Routes.Home -> NavEntry(key) {
                     HomeScreen()

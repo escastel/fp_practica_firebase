@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.example.practicafirebase.R
 import com.example.practicafirebase.ui.theme.PracticaFirebaseTheme
 
+//TODO: Añadir que no se vea la contraseña.
+//TODO: Añadir el tipo de teclado.
 @Composable
 fun CustomOutlinedField(
     value: String,

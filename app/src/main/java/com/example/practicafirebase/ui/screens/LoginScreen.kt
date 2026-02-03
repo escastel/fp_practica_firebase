@@ -36,7 +36,7 @@ import com.google.firebase.auth.FirebaseAuth
 @Composable
 fun LoginScreen(
     auth: FirebaseAuth,
-    onLoginClick: () -> Unit,
+    onEnterClick: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
@@ -80,7 +80,7 @@ fun LoginScreen(
             onClick = {
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener { user ->
-                        onLoginClick()
+                        onEnterClick()
                     }
                     .addOnFailureListener { e ->
                         Log.e("Firebase", "Error en login ${e.message}")
