@@ -71,7 +71,19 @@ fun HomeScreen(
             CustomButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.btn_create_product),
-                onClick = { viewModel.addProduct(name, price.toDouble(), description, imageUrl) }
+                onClick = {
+                    if (price == "") price = "0"
+                    viewModel.addProduct(
+                        name = name,
+                        price = price.toDouble(),
+                        description = description,
+                        imageUrl = imageUrl
+                    )
+                    name = ""
+                    price = ""
+                    description = ""
+                    imageUrl = ""
+                }
             )
 
             LazyColumn (
@@ -87,8 +99,22 @@ fun HomeScreen(
                                 product.price.toString(),
                                 product.description,
                                 product.imageUrl
-                            )},
-                        onEditClick = { /*TODO*/ },
+                            )
+                        },
+                        onEditClick = {
+                            if (price == "") price = product.price.toString()
+                            viewModel.updateProduct(
+                                id = product.id,
+                                name = name,
+                                price = price.toDouble(),
+                                description = description,
+                                imageUrl = imageUrl
+                            )
+                            name = ""
+                            price = ""
+                            description = ""
+                            imageUrl = ""
+                        },
                         onDeleteClick = { viewModel.deleteProduct(product.id) }
                     )
                 }

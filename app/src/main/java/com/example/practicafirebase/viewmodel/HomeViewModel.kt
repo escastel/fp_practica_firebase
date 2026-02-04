@@ -36,8 +36,12 @@ class HomeViewModel: ViewModel() {
     }
 
     fun addProduct(name: String, price: Double, description: String, imageUrl: String) {
-        val product =
-            Product(name = name, price = price, description = description, imageUrl = imageUrl)
+        val product = Product(
+            name = name,
+            price = price,
+            description = description,
+            imageUrl = imageUrl
+        )
         productsCollection.add(product)
             .addOnFailureListener { e ->
                 Log.e("Error Firebase", "Error al guardar: ${e.message}", e)
@@ -57,7 +61,7 @@ class HomeViewModel: ViewModel() {
             }
     }
 
-    private fun updateProduct(
+    fun updateProduct(
         id: String,
         name: String,
         price: Double?,
