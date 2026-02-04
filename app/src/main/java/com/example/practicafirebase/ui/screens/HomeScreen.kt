@@ -3,6 +3,7 @@ package com.example.practicafirebase.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -68,6 +69,7 @@ fun HomeScreen(
             )
 
             CustomButton(
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.btn_create_product),
                 onClick = { viewModel.addProduct(name, price.toDouble(), description, imageUrl) }
             )

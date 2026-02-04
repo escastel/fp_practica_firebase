@@ -17,6 +17,7 @@
     <string name="btn_register">Registrate</string>
     <string name="btn_cancel">Cancelar</string>
     <string name="btn_exit">Salir</string>
+    <string name="btn_back">Atrás</string>
     <string name="btn_create_product">Agregar Producto</string>
 
     <string name="no_account">¿No tienes cuenta?</string>

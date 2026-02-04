@@ -73,6 +73,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             CustomButton(
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.btn_login),
                 onClick = {
                     auth.signInWithEmailAndPassword(email, password)

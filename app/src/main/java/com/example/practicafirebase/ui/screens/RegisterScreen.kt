@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -78,6 +79,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             CustomButton(
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.btn_register),
                 onClick = {
                     if (password == password2){
@@ -95,6 +97,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             CustomButton(
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.btn_cancel),
                 onClick = onCancelClick
             )

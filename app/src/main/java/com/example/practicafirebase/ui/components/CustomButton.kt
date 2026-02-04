@@ -1,6 +1,5 @@
 package com.example.practicafirebase.ui.components
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -16,13 +15,13 @@ import com.example.practicafirebase.ui.theme.PracticaFirebaseTheme
 
 @Composable
 fun CustomButton(
+    modifier: Modifier = Modifier,
     text: String,
     onClick: () -> Unit,
 ) {
     Button(
         onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
             .height(50.dp),
         shape = RoundedCornerShape(12.dp)
     ) {
