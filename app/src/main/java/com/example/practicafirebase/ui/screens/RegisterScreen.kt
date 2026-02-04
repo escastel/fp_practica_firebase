@@ -23,6 +23,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.practicafirebase.R
+import com.example.practicafirebase.ui.components.CustomAlertDialog
 import com.example.practicafirebase.ui.components.CustomButton
 import com.example.practicafirebase.ui.components.CustomOutlinedField
 import com.google.firebase.auth.FirebaseAuth
@@ -36,6 +37,9 @@ fun RegisterScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var password2 by remember { mutableStateOf("") }
+    var showErrorIdenticalPasswd by remember { mutableStateOf(false) }
+    var showErrorInvalidPasswd by remember { mutableStateOf(false) }
+
 
     Scaffold { paddingValues ->
         Column(
@@ -94,7 +98,10 @@ fun RegisterScreen(
                             }
                             .addOnFailureListener { e ->
                                 Log.e("Firebase", "Error en la creación de usuario ${e.message}")
+                                showErrorInvalidPasswd = true
                             }
+                    } else {
+                        showErrorIdenticalPasswd = true
                     }
                 }
             )
@@ -107,6 +114,24 @@ fun RegisterScreen(
                 onClick = onCancelClick
             )
 
+        }
+
+        if (showErrorIdenticalPasswd){
+            CustomAlertDialog(
+                btnText = stringResource(R.string.btn_exit),
+                title = stringResource(R.string.error_register),
+                message = stringResource(R.string.error_identical_passwd_message),
+                onDismissDialog = { showErrorIdenticalPasswd = false }
+            )
+        }
+
+        if (showErrorInvalidPasswd){
+            CustomAlertDialog(
+                btnText = stringResource(R.string.btn_exit),
+                title = stringResource(R.string.error_register),
+                message = stringResource(R.string.error_invalid_passwd_message),
+                onDismissDialog = { showErrorInvalidPasswd = false }
+            )
         }
     }
 }

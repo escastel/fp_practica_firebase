@@ -25,6 +25,9 @@
 
     <string name="error_login">Error de autentificación</string>
     <string name="error_login_message">El email y/o la contraseña son incorrectas</string>
+    <string name="error_register">Error de registro</string>
+    <string name="error_identical_passwd_message">Las dos contraseñas introducidas no son iguales</string>
+    <string name="error_invalid_passwd_message">La contraseña introducida es inválida. Esta debe contener al menos 6 caracteres</string>
     <string name="error_price">Solo se admiten números</string>
 
 </resources>
