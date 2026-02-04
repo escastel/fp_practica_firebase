@@ -36,6 +36,7 @@ fun Navigation(auth: FirebaseAuth) {
                 }
                 is Routes.Home -> NavEntry(key) {
                     HomeScreen(
+                        auth = auth,
                         onExitClick = { backStack.removeLastOrNull() }
                     )
                 }

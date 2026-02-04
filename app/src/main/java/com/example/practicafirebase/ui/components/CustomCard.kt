@@ -11,10 +11,13 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.practicafirebase.ui.theme.PracticaFirebaseTheme
@@ -23,6 +26,9 @@ import com.example.practicafirebase.ui.theme.PracticaFirebaseTheme
 fun CustomCard(
     name: String,
     price: String,
+    onSearchClick: () -> Unit,
+    onEditClick: () -> Unit,
+    onDeleteClick: () -> Unit
 ) {
     Card{
         Row(
@@ -31,16 +37,30 @@ fun CustomCard(
             horizontalArrangement = Arrangement.SpaceBetween
         ){
             Column {
-                Text(name)
-                Text(price)
+                Text(text = name, fontWeight = FontWeight.Bold)
+                Text(text = price)
             }
 
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Icon(Icons.Default.Search, contentDescription = null)
-                Icon(Icons.Default.Create, contentDescription = "")
-                Icon(Icons.Default.Delete, contentDescription = null)
+            Row {
+                IconButton( onClick = onSearchClick ) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = null
+                    )
+                }
+                IconButton( onClick = onEditClick ) {
+                    Icon(
+                        imageVector = Icons.Default.Create,
+                        contentDescription = ""
+                    )
+                }
+                IconButton( onClick = onDeleteClick ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null,
+                        tint = Color.Red
+                    )
+                }
             }
         }
     }
@@ -52,7 +72,10 @@ fun CustomCardPreview(){
     PracticaFirebaseTheme {
         CustomCard(
             name = "Camiseta",
-            price = "97.89"
+            price = "97.89",
+            onSearchClick = {},
+            onEditClick = {},
+            onDeleteClick = {}
         )
     }
 }

@@ -2,21 +2,12 @@ package com.example.practicafirebase.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ExitToApp
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,13 +22,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.practicafirebase.R
 import com.example.practicafirebase.ui.components.CustomButton
 import com.example.practicafirebase.ui.components.CustomCard
+import com.example.practicafirebase.ui.components.CustomForm
+import com.example.practicafirebase.ui.components.CustomHeader
 import com.example.practicafirebase.viewmodel.HomeViewModel
+import com.google.firebase.auth.FirebaseAuth
 
+//TODO: Navegar a detalles de cada producto
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = viewModel(),
-    onExitClick: () -> Unit
+    auth: FirebaseAuth,
+    onExitClick: () -> Unit,
+    viewModel: HomeViewModel = viewModel()
 ) {
     Scaffold { paddingValues ->
         val products by viewModel.products.collectAsState()
@@ -55,44 +51,20 @@ fun HomeScreen(
                 .padding(16.dp)
                 .fillMaxSize()
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ){
-                Text(text = "Bienvenido ester@gmail.com")
-                IconButton(onClick = onExitClick){
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Outlined.ExitToApp,
-                        contentDescription = stringResource(R.string.btn_exit)
-                    )
-                }
-            }
-            TextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text(text = stringResource(R.string.label_name)) },
-                modifier = Modifier.fillMaxWidth()
+            CustomHeader(
+                email = auth.currentUser?.email,
+                onExitClick = onExitClick
             )
-            TextField(
-                value = price,
-                onValueChange = { price = it },
-                label = { Text(text = stringResource(R.string.label_price)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            TextField(
-                value = description,
-                onValueChange = { description = it },
-                label = { Text(text = stringResource(R.string.label_description)) },
-                modifier = Modifier.fillMaxWidth().height(100.dp)
-            )
-            TextField(
-                value = imageUrl,
-                onValueChange = { imageUrl = it },
-                label = { Text(text = stringResource(R.string.label_image_url)) },
-                modifier = Modifier.fillMaxWidth()
+
+            CustomForm(
+                name = name,
+                onNameChange = { name = it },
+                price = price,
+                onPriceChange = { price = it },
+                description = description,
+                onDescriptionChange = { description = it },
+                imageUrl = imageUrl,
+                onImageUrlChange = { imageUrl = it }
             )
 
             CustomButton(
@@ -100,9 +72,17 @@ fun HomeScreen(
                 onClick = { viewModel.addProduct(name, price.toDouble(), description, imageUrl) }
             )
 
-            LazyColumn{
+            LazyColumn (
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ){
                 items(products) { product ->
-                    CustomCard(product.name, product.price.toString())
+                    CustomCard(
+                        name = product.name,
+                        price = product.price.toString(),
+                        onSearchClick = { /*TODO*/ },
+                        onEditClick = { /*TODO*/ },
+                        onDeleteClick = { viewModel.deleteProduct(product.id) }
+                    )
                 }
             }
         }

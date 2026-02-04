@@ -46,7 +46,7 @@ class HomeViewModel: ViewModel() {
             .addOnCompleteListener { }
     }
 
-    private fun deleteProduct(id: String) {
+    fun deleteProduct(id: String) {
         productsCollection.document(id)
             .delete()
             .addOnFailureListener {
