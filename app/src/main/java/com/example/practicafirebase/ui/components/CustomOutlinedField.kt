@@ -52,7 +52,7 @@ fun CustomOutlinedField(
         keyboardOptions = keyboardOptions,
         visualTransformation = if (!visibleText) PasswordVisualTransformation('*') else VisualTransformation.None,
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(12.dp),
     )
 }
 

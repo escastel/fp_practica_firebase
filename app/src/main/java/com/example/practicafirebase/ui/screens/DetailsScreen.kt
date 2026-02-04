@@ -36,31 +36,23 @@ fun DetailsScreen(
                 .padding(bottom = 16.dp)
                 .padding(paddingValues)
         ) {
-            if (imageUrl.isNotBlank()){
-                AsyncImage(
-                    model = imageUrl,
-                    contentDescription = "",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-                )
-            } else {
-                AsyncImage(
-                    model = "https://xumuxua.com/wp-content/uploads/2021/07/SINFOTO.jpg",
-                    contentDescription = "",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-                )
-            }
+            val image = imageUrl.ifBlank { "https://xumuxua.com/wp-content/uploads/2021/07/SINFOTO.jpg" }
+            val descrip = description.ifBlank { stringResource(R.string.no_description) }
+
+            AsyncImage(
+                model = image,
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(250.dp)
+            )
 
             ProductDetails(
                 modifier = Modifier.weight(1f),
                 name = name,
                 price = price,
-                description = description
+                description = descrip
             )
 
             CustomButton(
