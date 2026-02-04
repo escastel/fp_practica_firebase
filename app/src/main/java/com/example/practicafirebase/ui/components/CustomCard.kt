@@ -71,7 +71,7 @@ fun CustomCard(
 fun CustomCardPreview(){
     PracticaFirebaseTheme {
         CustomCard(
-            name = "Camiseta",
+            name = "Camiseta Malaga CF",
             price = "97.89",
             onSearchClick = {},
             onEditClick = {},

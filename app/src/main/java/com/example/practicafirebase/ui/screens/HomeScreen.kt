@@ -28,7 +28,6 @@ import com.example.practicafirebase.ui.components.CustomHeader
 import com.example.practicafirebase.viewmodel.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
 
-//TODO: Navegar a detalles de cada producto
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(

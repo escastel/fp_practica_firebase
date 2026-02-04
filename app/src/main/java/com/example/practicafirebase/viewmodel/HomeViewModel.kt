@@ -66,16 +66,16 @@ class HomeViewModel: ViewModel() {
     ) {
         val data = mutableMapOf<String, Any>()
 
-        if (name.isNotEmpty() && name.isNotBlank()) {
+        if (name.isNotBlank()) {
             data["name"] = name
         }
         if (price != null) {
             data["price"] = price
         }
-        if (description.isNotEmpty() && description.isNotBlank()) {
+        if (description.isNotBlank()) {
             data["description"] = description
         }
-        if (imageUrl.isNotEmpty() && imageUrl.isNotBlank()) {
+        if (imageUrl.isNotBlank()) {
             data["imageUrl"] = imageUrl
         }
 
