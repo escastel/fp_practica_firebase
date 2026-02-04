@@ -20,16 +20,19 @@ import androidx.compose.ui.unit.dp
 import com.example.practicafirebase.ui.theme.PracticaFirebaseTheme
 
 @Composable
-fun CustomCard() {
-    Card(){
+fun CustomCard(
+    name: String,
+    price: String,
+) {
+    Card{
         Row(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ){
             Column {
-                Text("Camiseta")
-                Text("97.87")
+                Text(name)
+                Text(price)
             }
 
             Row(
@@ -47,7 +50,10 @@ fun CustomCard() {
 @Composable
 fun CustomCardPreview(){
     PracticaFirebaseTheme {
-        CustomCard()
+        CustomCard(
+            name = "Camiseta",
+            price = "97.89"
+        )
     }
 }
 

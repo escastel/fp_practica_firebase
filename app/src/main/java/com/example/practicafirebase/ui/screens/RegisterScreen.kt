@@ -34,7 +34,7 @@ fun RegisterScreen(
     var password by remember { mutableStateOf("") }
     var password2 by remember { mutableStateOf("") }
 
-    Scaffold() { paddingValues ->
+    Scaffold { paddingValues ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
@@ -80,7 +80,7 @@ fun RegisterScreen(
             CustomButton(
                 text = stringResource(R.string.btn_register),
                 onClick = {
-                    if (password.equals(password2)){
+                    if (password == password2){
                         auth.createUserWithEmailAndPassword(email, password)
                             .addOnSuccessListener { user ->
                                 onRegisterClick()

@@ -38,7 +38,7 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
     var showErrorDialog by remember { mutableStateOf(false) }
 
-    Scaffold() { paddingValues ->
+    Scaffold { paddingValues ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,

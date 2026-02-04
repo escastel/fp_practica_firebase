@@ -35,7 +35,7 @@ class HomeViewModel: ViewModel() {
         }
     }
 
-    private fun addProduct(name: String, price: Double, description: String, imageUrl: String) {
+    fun addProduct(name: String, price: Double, description: String, imageUrl: String) {
         val product =
             Product(name = name, price = price, description = description, imageUrl = imageUrl)
         productsCollection.add(product)
