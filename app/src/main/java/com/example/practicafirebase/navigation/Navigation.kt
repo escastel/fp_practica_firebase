@@ -6,6 +6,7 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import com.example.practicafirebase.ui.screens.DetailsScreen
 import com.example.practicafirebase.ui.screens.HomeScreen
 import com.example.practicafirebase.ui.screens.LoginScreen
 import com.example.practicafirebase.ui.screens.RegisterScreen
@@ -37,7 +38,24 @@ fun Navigation(auth: FirebaseAuth) {
                 is Routes.Home -> NavEntry(key) {
                     HomeScreen(
                         auth = auth,
-                        onExitClick = { backStack.removeLastOrNull() }
+                        onExitClick = { backStack.removeLastOrNull() },
+                        onDetailsClick = { name, price, description, imageUrl ->
+                            backStack.add(Routes.Details(
+                                name = name,
+                                price = price,
+                                description = description,
+                                imageUrl = imageUrl
+                            ))
+                        }
+                    )
+                }
+                is Routes.Details -> NavEntry(key) {
+                    DetailsScreen(
+                        name = key.name,
+                        price = key.price,
+                        description = key.description,
+                        imageUrl = key.imageUrl,
+                        onBackClick = { backStack.removeLastOrNull() }
                     )
                 }
                 else -> NavEntry(key = Routes.Error){}

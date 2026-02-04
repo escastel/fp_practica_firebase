@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth
 fun HomeScreen(
     auth: FirebaseAuth,
     onExitClick: () -> Unit,
+    onDetailsClick: (String, String, String, String) -> Unit,
     viewModel: HomeViewModel = viewModel()
 ) {
     Scaffold { paddingValues ->
@@ -81,7 +82,13 @@ fun HomeScreen(
                     CustomCard(
                         name = product.name,
                         price = product.price.toString(),
-                        onSearchClick = { /*TODO*/ },
+                        onSearchClick = {
+                            onDetailsClick(
+                                product.name,
+                                product.price.toString(),
+                                product.description,
+                                product.imageUrl
+                            )},
                         onEditClick = { /*TODO*/ },
                         onDeleteClick = { viewModel.deleteProduct(product.id) }
                     )
