@@ -58,7 +58,7 @@ fun LoginScreen(
                 value = email,
                 onValueChange = { email = it },
                 label = stringResource(R.string.label_email),
-                icon = false
+                passwd = false
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -67,7 +67,7 @@ fun LoginScreen(
                 value = password,
                 onValueChange = { password = it },
                 label = stringResource(R.string.label_password),
-                icon = true
+                passwd = true
             )
 
             Spacer(modifier = Modifier.height(24.dp))

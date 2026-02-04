@@ -55,7 +55,7 @@ fun RegisterScreen(
                 value = email,
                 onValueChange = { email = it },
                 label = stringResource(R.string.label_email),
-                icon = false
+                passwd = false
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -64,7 +64,7 @@ fun RegisterScreen(
                 value = password,
                 onValueChange = { password = it },
                 label = stringResource(R.string.label_password),
-                icon = true
+                passwd = true
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -73,7 +73,7 @@ fun RegisterScreen(
                 value = password2,
                 onValueChange = { password2 = it },
                 label = stringResource(R.string.label_repeat_password),
-                icon = true
+                passwd = true
             )
 
             Spacer(modifier = Modifier.height(24.dp))
