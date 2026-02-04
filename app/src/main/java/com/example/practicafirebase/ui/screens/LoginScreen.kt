@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -37,74 +38,77 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
     var showErrorDialog by remember { mutableStateOf(false) }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp)
-    ) {
-        Text(
-            text = stringResource(R.string.title_login),
-            fontSize = 32.sp
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        CustomOutlinedField(
-            value = email,
-            onValueChange = { email = it },
-            label = stringResource(R.string.label_email),
-            icon = false
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        CustomOutlinedField(
-            value = password,
-            onValueChange = { password = it },
-            label = stringResource(R.string.label_password),
-            icon = true
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        CustomButton(
-            text = stringResource(R.string.btn_login),
-            onClick = {
-                auth.signInWithEmailAndPassword(email, password)
-                    .addOnSuccessListener { user ->
-                        onEnterClick()
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e("Firebase", "Error en login ${e.message}")
-                        showErrorDialog = true
-                    }
-
-            }
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+    Scaffold() { paddingValues ->
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp)
+                .padding(paddingValues)
         ) {
-            Text(text = stringResource(R.string.no_account))
-            TextButton(
-                onClick = onRegisterClick
+            Text(
+                text = stringResource(R.string.title_login),
+                fontSize = 32.sp
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            CustomOutlinedField(
+                value = email,
+                onValueChange = { email = it },
+                label = stringResource(R.string.label_email),
+                icon = false
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            CustomOutlinedField(
+                value = password,
+                onValueChange = { password = it },
+                label = stringResource(R.string.label_password),
+                icon = true
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            CustomButton(
+                text = stringResource(R.string.btn_login),
+                onClick = {
+                    auth.signInWithEmailAndPassword(email, password)
+                        .addOnSuccessListener { user ->
+                            onEnterClick()
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("Firebase", "Error en login ${e.message}")
+                            showErrorDialog = true
+                        }
+
+                }
+            )
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = stringResource(R.string.btn_register))
+                Text(text = stringResource(R.string.no_account))
+                TextButton(
+                    onClick = onRegisterClick
+                ) {
+                    Text(text = stringResource(R.string.btn_register))
+                }
             }
         }
-    }
 
-    if (showErrorDialog){
-        CustomAlertDialog(
-            btnText = stringResource(R.string.btn_exit),
-            title = stringResource(R.string.error_login),
-            message = stringResource(R.string.error_login_message),
-            onDismissDialog = { showErrorDialog = false }
-        )
+        if (showErrorDialog){
+            CustomAlertDialog(
+                btnText = stringResource(R.string.btn_exit),
+                title = stringResource(R.string.error_login),
+                message = stringResource(R.string.error_login_message),
+                onDismissDialog = { showErrorDialog = false }
+            )
+        }
     }
 }

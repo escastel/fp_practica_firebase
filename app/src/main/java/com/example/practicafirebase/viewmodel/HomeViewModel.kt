@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 class HomeViewModel: ViewModel() {
     private val db = Firebase.firestore
-    private val productsCollection = db.collection("productos")
+    private val productsCollection = db.collection("products")
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products
@@ -21,10 +21,10 @@ class HomeViewModel: ViewModel() {
 
     private fun getProducts() {
         productsCollection.addSnapshotListener { snapshot, error ->
-            if (error != null){
+            if (error != null) {
                 return@addSnapshotListener
             }
-            if (snapshot != null){
+            if (snapshot != null) {
                 val productsList = snapshot.documents.mapNotNull { doc ->
                     val product = doc.toObject(Product::class.java)
                     product?.id = doc.id
@@ -35,14 +35,15 @@ class HomeViewModel: ViewModel() {
         }
     }
 
-    private fun addProduct(name: String, price: Double) {
-        val product = Product(name = name, price = price)
+    private fun addProduct(name: String, price: Double, description: String, imageUrl: String) {
+        val product =
+            Product(name = name, price = price, description = description, imageUrl = imageUrl)
         productsCollection.add(product)
             .addOnFailureListener { e ->
                 Log.e("Error Firebase", "Error al guardar: ${e.message}", e)
             }
-            .addOnSuccessListener {  }
-            .addOnCompleteListener {  }
+            .addOnSuccessListener { }
+            .addOnCompleteListener { }
     }
 
     private fun deleteProduct(id: String) {
@@ -56,14 +57,26 @@ class HomeViewModel: ViewModel() {
             }
     }
 
-    private fun updateProduct(id: String, name: String, price: Double?){
+    private fun updateProduct(
+        id: String,
+        name: String,
+        price: Double?,
+        description: String,
+        imageUrl: String
+    ) {
         val data = mutableMapOf<String, Any>()
 
-        if (name.isNotEmpty() && name.isNotBlank()){
-            data["nombre"] = name
+        if (name.isNotEmpty() && name.isNotBlank()) {
+            data["name"] = name
         }
-        if (price != null){
-            data["precio"] = price
+        if (price != null) {
+            data["price"] = price
+        }
+        if (description.isNotEmpty() && description.isNotBlank()) {
+            data["description"] = description
+        }
+        if (imageUrl.isNotEmpty() && imageUrl.isNotBlank()) {
+            data["imageUrl"] = imageUrl
         }
 
         productsCollection.document(id)
@@ -74,5 +87,5 @@ class HomeViewModel: ViewModel() {
             .addOnFailureListener { e ->
                 Log.e("Error Firebase", "Error al actualizar: ${e.message}", e)
             }
+        }
     }
-}

@@ -16,6 +16,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
@@ -30,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.practicafirebase.ui.components.CustomButton
+import com.example.practicafirebase.ui.theme.PracticaFirebaseTheme
 import com.example.practicafirebase.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,8 +41,10 @@ fun HomeScreen(
 ) {
     Scaffold() { paddingValues ->
 //        val products by viewModel.products.collectAsState()
-        val nombre by remember { mutableStateOf("") }
-        val precio by remember { mutableStateOf("") }
+        val name by remember { mutableStateOf("") }
+        val price by remember { mutableStateOf("") }
+        val descripcion by remember { mutableStateOf("") }
+        val imageUrl by remember { mutableStateOf("") }
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -81,7 +85,7 @@ fun HomeScreen(
                 value = "",
                 onValueChange = {},
                 label = { Text(text = "Descripcion") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().height(100.dp)
             )
             TextField(
                 value = "",
@@ -106,5 +110,7 @@ fun HomeScreen(
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen()
+    PracticaFirebaseTheme {
+        HomeScreen()
+    }
 }

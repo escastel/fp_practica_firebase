@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,68 +34,71 @@ fun RegisterScreen(
     var password by remember { mutableStateOf("") }
     var password2 by remember { mutableStateOf("") }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp)
-    ) {
-        Text(
-            text = stringResource(R.string.title_register),
-            fontSize = 32.sp
-        )
+    Scaffold() { paddingValues ->
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp)
+                .padding(paddingValues)
+        ) {
+            Text(
+                text = stringResource(R.string.title_register),
+                fontSize = 32.sp
+            )
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-        CustomOutlinedField(
-            value = email,
-            onValueChange = { email = it },
-            label = stringResource(R.string.label_email),
-            icon = false
-        )
+            CustomOutlinedField(
+                value = email,
+                onValueChange = { email = it },
+                label = stringResource(R.string.label_email),
+                icon = false
+            )
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-        CustomOutlinedField(
-            value = password,
-            onValueChange = { password = it },
-            label = stringResource(R.string.label_password),
-            icon = true
-        )
+            CustomOutlinedField(
+                value = password,
+                onValueChange = { password = it },
+                label = stringResource(R.string.label_password),
+                icon = true
+            )
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-        CustomOutlinedField(
-            value = password2,
-            onValueChange = { password2 = it },
-            label = stringResource(R.string.label_repeat_password),
-            icon = true
-        )
+            CustomOutlinedField(
+                value = password2,
+                onValueChange = { password2 = it },
+                label = stringResource(R.string.label_repeat_password),
+                icon = true
+            )
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-        CustomButton(
-            text = stringResource(R.string.btn_register),
-            onClick = {
-                if (password.equals(password2)){
-                    auth.createUserWithEmailAndPassword(email, password)
-                        .addOnSuccessListener { user ->
-                            onRegisterClick()
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e("Firebase", "Error en la creación de usuario ${e.message}")
-                        }
+            CustomButton(
+                text = stringResource(R.string.btn_register),
+                onClick = {
+                    if (password.equals(password2)){
+                        auth.createUserWithEmailAndPassword(email, password)
+                            .addOnSuccessListener { user ->
+                                onRegisterClick()
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e("Firebase", "Error en la creación de usuario ${e.message}")
+                            }
+                    }
                 }
-            }
-        )
+            )
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-        CustomButton(
-            text = stringResource(R.string.btn_cancel),
-            onClick = onCancelClick
-        )
+            CustomButton(
+                text = stringResource(R.string.btn_cancel),
+                onClick = onCancelClick
+            )
 
+        }
     }
 }
