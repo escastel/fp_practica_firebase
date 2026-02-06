@@ -1,6 +1,5 @@
 package com.example.practicafirebase.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -104,7 +103,7 @@ fun LoginScreen(
             CustomAlertDialog(
                 btnText = stringResource(R.string.btn_exit),
                 title = stringResource(R.string.error_login),
-                message = stringResource(R.string.error_login_message),
+                message = stringResource(uiState.errorDialogMsg),
                 onDismissDialog = { viewModel.updateShowDialog(false) }
             )
         }

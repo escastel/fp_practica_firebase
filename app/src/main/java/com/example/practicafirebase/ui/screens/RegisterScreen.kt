@@ -1,6 +1,5 @@
 package com.example.practicafirebase.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,34 +11,30 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.practicafirebase.R
 import com.example.practicafirebase.ui.components.CustomAlertDialog
 import com.example.practicafirebase.ui.components.CustomButton
 import com.example.practicafirebase.ui.components.CustomOutlinedField
+import com.example.practicafirebase.viewmodel.RegisterViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun RegisterScreen(
     auth: FirebaseAuth,
     onCancelClick: () -> Unit,
-    onRegisterClick: () -> Unit
+    onRegisterClick: () -> Unit,
+    viewModel: RegisterViewModel = viewModel()
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var password2 by remember { mutableStateOf("") }
-    var showErrorIdenticalPasswd by remember { mutableStateOf(false) }
-    var showErrorInvalidPasswd by remember { mutableStateOf(false) }
-
+    val uiState by viewModel.uiState.collectAsState()
 
     Scaffold { paddingValues ->
         Column(
@@ -58,33 +53,33 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             CustomOutlinedField(
-                value = email,
-                onValueChange = { email = it },
+                value = uiState.email,
+                onValueChange = { viewModel.updateEmail(it) },
                 label = stringResource(R.string.label_email),
                 passwd = false,
-                error = false,
+                error = uiState.errorEmail,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             CustomOutlinedField(
-                value = password,
-                onValueChange = { password = it },
+                value = uiState.password,
+                onValueChange = { viewModel.updatePassword(it) },
                 label = stringResource(R.string.label_password),
                 passwd = true,
-                error = false,
+                error = uiState.errorPass,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             CustomOutlinedField(
-                value = password2,
-                onValueChange = { password2 = it },
+                value = uiState.password2,
+                onValueChange = { viewModel.updatePassword2(it) },
                 label = stringResource(R.string.label_repeat_password),
                 passwd = true,
-                error = false,
+                error = uiState.errorPass,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
 
@@ -94,18 +89,7 @@ fun RegisterScreen(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.btn_register),
                 onClick = {
-                    if (password == password2){
-                        auth.createUserWithEmailAndPassword(email, password)
-                            .addOnSuccessListener { user ->
-                                onRegisterClick()
-                            }
-                            .addOnFailureListener { e ->
-                                Log.e("Firebase", "Error en la creación de usuario ${e.message}")
-                                showErrorInvalidPasswd = true
-                            }
-                    } else {
-                        showErrorIdenticalPasswd = true
-                    }
+                    viewModel.createUser(auth, onRegisterClick)
                 }
             )
 
@@ -119,21 +103,12 @@ fun RegisterScreen(
 
         }
 
-        if (showErrorIdenticalPasswd){
+        if (uiState.showErrorDialog){
             CustomAlertDialog(
                 btnText = stringResource(R.string.btn_exit),
                 title = stringResource(R.string.error_register),
-                message = stringResource(R.string.error_identical_passwd_message),
-                onDismissDialog = { showErrorIdenticalPasswd = false }
-            )
-        }
-
-        if (showErrorInvalidPasswd){
-            CustomAlertDialog(
-                btnText = stringResource(R.string.btn_exit),
-                title = stringResource(R.string.error_register),
-                message = stringResource(R.string.error_invalid_passwd_message),
-                onDismissDialog = { showErrorInvalidPasswd = false }
+                message = stringResource(uiState.errorDialogMsg),
+                onDismissDialog = { viewModel.updateShowDialog(false) }
             )
         }
     }
