@@ -16,6 +16,10 @@ class RegisterViewModel: ViewModel() {
         "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\$"
     )
 
+    init {
+        _uiState.value = RegisterUiState()
+    }
+
     fun updateEmail(newEmail: String){
         if (newEmail.isNotBlank() && emailPattern.matcher(newEmail).matches()){
             _uiState.value = _uiState.value.copy(errorEmail = false)
@@ -53,13 +57,11 @@ class RegisterViewModel: ViewModel() {
 
 
     fun createUser(auth: FirebaseAuth, onRegisterClick: () -> Unit) {
-        // Mensaje de error: campos vacios
         if (_uiState.value.email.isBlank() || _uiState.value.password.isBlank() || _uiState.value.password2.isBlank()) {
             updateShowDialog(true)
             updateDialogMsg(R.string.error_empty_fields)
             return
         }
-        //Mensaje de error: contraseñas diferentes
         if (_uiState.value.password != _uiState.value.password2) {
             updateShowDialog(true)
             updateDialogMsg(R.string.error_identical_passwd_message)

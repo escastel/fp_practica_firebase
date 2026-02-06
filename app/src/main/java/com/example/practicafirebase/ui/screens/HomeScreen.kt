@@ -1,5 +1,6 @@
 package com.example.practicafirebase.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,7 @@ import com.example.practicafirebase.ui.components.CustomHeader
 import com.example.practicafirebase.viewmodel.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
 
+@SuppressLint("DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -33,7 +35,14 @@ fun HomeScreen(
     onDetailsClick: (String, String, String, String) -> Unit,
     viewModel: HomeViewModel = viewModel()
 ) {
-    Scaffold { paddingValues ->
+    Scaffold(
+        topBar = {
+            CustomHeader(
+                email = auth.currentUser?.email,
+                onExitClick = onExitClick
+            )
+        }
+    ) { paddingValues ->
         val products by viewModel.products.collectAsState()
         val uiState by viewModel.uiState.collectAsState()
 
@@ -45,11 +54,6 @@ fun HomeScreen(
                 .padding(16.dp)
                 .fillMaxSize()
         ) {
-            CustomHeader(
-                email = auth.currentUser?.email,
-                onExitClick = onExitClick
-            )
-
             CustomForm(
                 name = uiState.name,
                 onNameChange = { viewModel.updateName(it) },
