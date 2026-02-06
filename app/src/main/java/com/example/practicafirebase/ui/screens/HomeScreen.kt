@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -26,6 +27,7 @@ import com.example.practicafirebase.ui.components.CustomHeader
 import com.example.practicafirebase.viewmodel.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
 
+// Mirar lo de borrar los campos al entrar o salir de una pantalla y añadir pequeñas animaciones
 @SuppressLint("DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,6 +37,13 @@ fun HomeScreen(
     onDetailsClick: (String, String, String, String) -> Unit,
     viewModel: HomeViewModel = viewModel()
 ) {
+    val products by viewModel.products.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.cleanState()
+    }
+
     Scaffold(
         topBar = {
             CustomHeader(
@@ -43,9 +52,6 @@ fun HomeScreen(
             )
         }
     ) { paddingValues ->
-        val products by viewModel.products.collectAsState()
-        val uiState by viewModel.uiState.collectAsState()
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),

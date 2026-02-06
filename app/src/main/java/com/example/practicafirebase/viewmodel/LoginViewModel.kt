@@ -16,10 +16,6 @@ class LoginViewModel: ViewModel() {
         "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\$"
     )
 
-    init {
-        _uiState.value = LoginUiState()
-    }
-
     fun updateEmail(newEmail: String){
         if (emailPattern.matcher(newEmail).matches()){
             _uiState.value = _uiState.value.copy(errorEmail = false)
@@ -62,5 +58,9 @@ class LoginViewModel: ViewModel() {
                 updateShowDialog(true)
                 updateDialogMsg(R.string.error_login_message)
             }
+    }
+
+    fun cleanState(){
+        _uiState.value = LoginUiState()
     }
 }

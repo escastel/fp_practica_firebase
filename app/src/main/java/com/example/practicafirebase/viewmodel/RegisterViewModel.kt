@@ -78,4 +78,8 @@ class RegisterViewModel: ViewModel() {
                 updateDialogMsg(R.string.error_invalid_fields)
             }
     }
+
+    fun cleanState(){
+        _uiState.value = RegisterUiState()
+    }
 }
