@@ -3,10 +3,12 @@ package com.example.practicafirebase.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.practicafirebase.model.Product
+import com.example.practicafirebase.state.HomeUiState
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.math.RoundingMode
 
 class HomeViewModel: ViewModel() {
     private val db = Firebase.firestore
@@ -15,10 +17,43 @@ class HomeViewModel: ViewModel() {
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     val products: StateFlow<List<Product>> = _products
 
+    private val _uiState = MutableStateFlow(HomeUiState())
+    val uiState: StateFlow<HomeUiState> = _uiState
+
+
     init {
         getProducts()
     }
 
+    /* Métodos de estado */
+    fun updateName(newName: String){
+        _uiState.value = _uiState.value.copy(name = newName)
+    }
+
+    fun updatePrice(newPrice: String) {
+        try {
+            newPrice.toDouble()
+            _uiState.value = _uiState.value.copy(price = newPrice)
+        } catch (
+            e: NumberFormatException
+        ) {
+            e.message
+        }
+    }
+
+    fun updateDescription(newDescription: String) {
+        _uiState.value = _uiState.value.copy(description = newDescription)
+    }
+
+    fun updateImageUrl(newImageUrl: String) {
+        _uiState.value = _uiState.value.copy(imageUrl = newImageUrl)
+    }
+
+    fun cleanState(){
+        _uiState.value = HomeUiState()
+    }
+
+    /* Métodos CRUD */
     private fun getProducts() {
         productsCollection.addSnapshotListener { snapshot, error ->
             if (error != null) {
@@ -35,19 +70,22 @@ class HomeViewModel: ViewModel() {
         }
     }
 
-    fun addProduct(name: String, price: Double, description: String, imageUrl: String) {
+    fun addProduct() {
         val product = Product(
-            name = name,
-            price = price,
-            description = description,
-            imageUrl = imageUrl
+            name = _uiState.value.name,
+            price = _uiState.value.price.toDouble(),
+            description = _uiState.value.description,
+            imageUrl = _uiState.value.imageUrl
         )
+
         productsCollection.add(product)
             .addOnFailureListener { e ->
                 Log.e("Error Firebase", "Error al guardar: ${e.message}", e)
             }
             .addOnSuccessListener { }
             .addOnCompleteListener { }
+
+        cleanState()
     }
 
     fun deleteProduct(id: String) {
@@ -61,26 +99,20 @@ class HomeViewModel: ViewModel() {
             }
     }
 
-    fun updateProduct(
-        id: String,
-        name: String,
-        price: Double?,
-        description: String,
-        imageUrl: String
-    ) {
+    fun updateProduct(id: String) {
         val data = mutableMapOf<String, Any>()
 
-        if (name.isNotBlank()) {
-            data["name"] = name
+        if (_uiState.value.name.isNotBlank()) {
+            data["name"] = _uiState.value.name
         }
-        if (price != null) {
-            data["price"] = price
+        if (_uiState.value.price.isNotBlank()) {
+            data["price"] = _uiState.value.price.toDouble()
         }
-        if (description.isNotBlank()) {
-            data["description"] = description
+        if (_uiState.value.description.isNotBlank()) {
+            data["description"] = _uiState.value.description
         }
-        if (imageUrl.isNotBlank()) {
-            data["imageUrl"] = imageUrl
+        if (_uiState.value.imageUrl.isNotBlank()) {
+            data["imageUrl"] = _uiState.value.imageUrl
         }
 
         productsCollection.document(id)
@@ -91,5 +123,7 @@ class HomeViewModel: ViewModel() {
             .addOnFailureListener { e ->
                 Log.e("Error Firebase", "Error al actualizar: ${e.message}", e)
             }
-        }
+
+        cleanState()
     }
+}

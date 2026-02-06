@@ -1,5 +1,6 @@
 package com.example.practicafirebase.ui.screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,9 +13,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,6 +26,7 @@ import com.example.practicafirebase.ui.components.CustomHeader
 import com.example.practicafirebase.viewmodel.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
 
+@SuppressLint("DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -38,11 +37,7 @@ fun HomeScreen(
 ) {
     Scaffold { paddingValues ->
         val products by viewModel.products.collectAsState()
-
-        var name by remember { mutableStateOf("") }
-        var price by remember { mutableStateOf("") }
-        var description by remember { mutableStateOf("") }
-        var imageUrl by remember { mutableStateOf("") }
+        val uiState by viewModel.uiState.collectAsState()
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,32 +53,20 @@ fun HomeScreen(
             )
 
             CustomForm(
-                name = name,
-                onNameChange = { name = it },
-                price = price,
-                onPriceChange = { price = it },
-                description = description,
-                onDescriptionChange = { description = it },
-                imageUrl = imageUrl,
-                onImageUrlChange = { imageUrl = it }
+                name = uiState.name,
+                onNameChange = { viewModel.updateName(it) },
+                price = uiState.price,
+                onPriceChange = {viewModel.updatePrice(it) },
+                description = uiState.description,
+                onDescriptionChange = { viewModel.updateDescription(it) },
+                imageUrl = uiState.imageUrl,
+                onImageUrlChange = { viewModel.updateImageUrl(it) }
             )
 
             CustomButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.btn_create_product),
-                onClick = {
-                    if (price == "") price = "0"
-                    viewModel.addProduct(
-                        name = name,
-                        price = price.toDouble(),
-                        description = description,
-                        imageUrl = imageUrl
-                    )
-                    name = ""
-                    price = ""
-                    description = ""
-                    imageUrl = ""
-                }
+                onClick = { viewModel.addProduct() }
             )
 
             LazyColumn (
@@ -92,30 +75,17 @@ fun HomeScreen(
                 items(products) { product ->
                     CustomCard(
                         name = product.name,
-                        price = product.price.toString(),
+                        price = String.format("%.2f", product.price),
                         onSearchClick = {
                             onDetailsClick(
                                 product.name,
-                                product.price.toString(),
+                                String.format("%.2f", product.price),
                                 product.description,
                                 product.imageUrl
                             )
                         },
-                        onEditClick = {
-                            if (price == "") price = product.price.toString()
-                            viewModel.updateProduct(
-                                id = product.id,
-                                name = name,
-                                price = price.toDouble(),
-                                description = description,
-                                imageUrl = imageUrl
-                            )
-                            name = ""
-                            price = ""
-                            description = ""
-                            imageUrl = ""
-                        },
-                        onDeleteClick = { viewModel.deleteProduct(product.id) }
+                        onEditClick = { viewModel.updateProduct(id = product.id) },
+                        onDeleteClick = { viewModel.deleteProduct(id = product.id) }
                     )
                 }
             }
