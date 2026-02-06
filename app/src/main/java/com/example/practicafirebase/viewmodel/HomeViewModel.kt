@@ -8,7 +8,6 @@ import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.math.RoundingMode
 
 class HomeViewModel: ViewModel() {
     private val db = Firebase.firestore
@@ -34,9 +33,11 @@ class HomeViewModel: ViewModel() {
         try {
             newPrice.toDouble()
             _uiState.value = _uiState.value.copy(price = newPrice)
+            _uiState.value = _uiState.value.copy(priceError = false)
         } catch (
             e: NumberFormatException
         ) {
+            _uiState.value = _uiState.value.copy(priceError = true)
             e.message
         }
     }

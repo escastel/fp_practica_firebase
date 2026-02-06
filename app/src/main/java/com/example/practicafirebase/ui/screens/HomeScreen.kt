@@ -1,6 +1,5 @@
 package com.example.practicafirebase.ui.screens
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +25,6 @@ import com.example.practicafirebase.ui.components.CustomHeader
 import com.example.practicafirebase.viewmodel.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
 
-@SuppressLint("DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -57,6 +55,7 @@ fun HomeScreen(
                 onNameChange = { viewModel.updateName(it) },
                 price = uiState.price,
                 onPriceChange = {viewModel.updatePrice(it) },
+                errorPrice = uiState.priceError,
                 description = uiState.description,
                 onDescriptionChange = { viewModel.updateDescription(it) },
                 imageUrl = uiState.imageUrl,

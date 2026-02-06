@@ -9,10 +9,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,13 +24,12 @@ fun CustomForm(
     onNameChange: (String) -> Unit,
     price: String,
     onPriceChange: (String) -> Unit,
+    errorPrice: Boolean,
     description: String,
     onDescriptionChange: (String) -> Unit,
     imageUrl: String,
     onImageUrlChange: (String) -> Unit
 ) {
-    var error by remember { mutableStateOf(false) }
-
     TextField(
         value = name,
         onValueChange = onNameChange,
@@ -49,12 +44,11 @@ fun CustomForm(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         maxLines = 1,
         supportingText = {
-            if (price.any { !it.isDigit() && it != '.'}) {
+            if (errorPrice){
                 Text(text = stringResource(R.string.error_price))
-                error = true
-            } else error = false
+            }
         },
-        isError = error,
+        isError = errorPrice,
         modifier = Modifier.fillMaxWidth()
     )
     TextField(
@@ -85,6 +79,7 @@ fun CustomFormPreview() {
                 price = "",
                 description = "",
                 imageUrl = "",
+                errorPrice = false,
                 onNameChange = {},
                 onPriceChange = {},
                 onDescriptionChange = {},
