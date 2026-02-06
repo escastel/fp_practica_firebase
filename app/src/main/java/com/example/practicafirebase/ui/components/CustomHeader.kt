@@ -54,7 +54,7 @@ fun CustomHeader(
 fun CustomHeaderPreview(){
     PracticaFirebaseTheme {
         CustomHeader(
-            email = "ejempafdfdafffggsfgdsgdfglo@gmail.com",
+            email = "ejemplo@gmail.com",
             onExitClick = {}
         )
     }
