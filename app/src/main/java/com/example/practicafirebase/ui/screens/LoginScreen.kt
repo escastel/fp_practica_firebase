@@ -60,6 +60,7 @@ fun LoginScreen(
                 onValueChange = { viewModel.updateEmail(it) },
                 label = stringResource(R.string.label_email),
                 passwd = false,
+                error = uiState.errorEmail,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
 
@@ -70,6 +71,7 @@ fun LoginScreen(
                 onValueChange = { viewModel.updatePassword(it) },
                 label = stringResource(R.string.label_password),
                 passwd = true,
+                error = uiState.errorPass,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
 

@@ -30,6 +30,7 @@ fun CustomOutlinedField(
     onValueChange: (String) -> Unit,
     label: String,
     passwd: Boolean,
+    error: Boolean,
     keyboardOptions: KeyboardOptions
 ) {
     var visibleText by remember { mutableStateOf(false) }
@@ -49,6 +50,14 @@ fun CustomOutlinedField(
                 }
             }
         },
+        supportingText = {
+            if (error && !passwd) {
+                Text(text = stringResource(R.string.error_email))
+            } else if (error) {
+                Text(text = stringResource(R.string.error_password))
+            }
+        },
+        isError = error,
         keyboardOptions = keyboardOptions,
         visualTransformation = if (!visibleText) PasswordVisualTransformation('*') else VisualTransformation.None,
         modifier = Modifier.fillMaxWidth(),
@@ -64,6 +73,7 @@ fun CustomOutlineFieldPreview(){
             label = stringResource(R.string.label_password),
             passwd = true,
             value = "",
+            error = false,
             onValueChange = {},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
         )

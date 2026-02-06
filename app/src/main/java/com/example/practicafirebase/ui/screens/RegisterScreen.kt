@@ -62,6 +62,7 @@ fun RegisterScreen(
                 onValueChange = { email = it },
                 label = stringResource(R.string.label_email),
                 passwd = false,
+                error = false,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
 
@@ -72,6 +73,7 @@ fun RegisterScreen(
                 onValueChange = { password = it },
                 label = stringResource(R.string.label_password),
                 passwd = true,
+                error = false,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
 
@@ -82,6 +84,7 @@ fun RegisterScreen(
                 onValueChange = { password2 = it },
                 label = stringResource(R.string.label_repeat_password),
                 passwd = true,
+                error = false,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
             )
 
