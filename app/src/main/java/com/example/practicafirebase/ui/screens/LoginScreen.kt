@@ -14,31 +14,30 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.practicafirebase.R
 import com.example.practicafirebase.ui.components.CustomAlertDialog
 import com.example.practicafirebase.ui.components.CustomButton
 import com.example.practicafirebase.ui.components.CustomOutlinedField
+import com.example.practicafirebase.viewmodel.LoginViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun LoginScreen(
     auth: FirebaseAuth,
     onEnterClick: () -> Unit,
-    onRegisterClick: () -> Unit
+    onRegisterClick: () -> Unit,
+    viewModel: LoginViewModel = viewModel()
 ) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var showErrorDialog by remember { mutableStateOf(false) }
+    val uiState by viewModel.uiState.collectAsState()
 
     Scaffold { paddingValues ->
         Column(
@@ -57,8 +56,8 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             CustomOutlinedField(
-                value = email,
-                onValueChange = { email = it },
+                value = uiState.email,
+                onValueChange = { viewModel.updateEmail(it) },
                 label = stringResource(R.string.label_email),
                 passwd = false,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
@@ -67,8 +66,8 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             CustomOutlinedField(
-                value = password,
-                onValueChange = { password = it },
+                value = uiState.password,
+                onValueChange = { viewModel.updatePassword(it) },
                 label = stringResource(R.string.label_password),
                 passwd = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
@@ -80,15 +79,7 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.btn_login),
                 onClick = {
-                    auth.signInWithEmailAndPassword(email, password)
-                        .addOnSuccessListener { user ->
-                            onEnterClick()
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e("Firebase", "Error en login ${e.message}")
-                            showErrorDialog = true
-                        }
-
+                    viewModel.singIn(auth, onEnterClick)
                 }
             )
             Spacer(modifier = Modifier.height(24.dp))
@@ -107,12 +98,12 @@ fun LoginScreen(
             }
         }
 
-        if (showErrorDialog){
+        if (uiState.showErrorDialog){
             CustomAlertDialog(
                 btnText = stringResource(R.string.btn_exit),
                 title = stringResource(R.string.error_login),
                 message = stringResource(R.string.error_login_message),
-                onDismissDialog = { showErrorDialog = false }
+                onDismissDialog = { viewModel.updateShowDialog(false) }
             )
         }
     }
