@@ -68,28 +68,28 @@ fun Navigation(auth: FirebaseAuth) {
         transitionSpec = {
             slideInHorizontally(
                 initialOffsetX = { it },
-                animationSpec = tween(300)
+                animationSpec = tween(800)
             ) togetherWith slideOutHorizontally(
                 targetOffsetX = { -it },
-                animationSpec = tween(300)
+                animationSpec = tween(800)
             )
         },
         popTransitionSpec = {
             slideInHorizontally(
                 initialOffsetX = { -it },
-                animationSpec = tween(300)
+                animationSpec = tween(800)
             ) togetherWith slideOutHorizontally(
                 targetOffsetX = { it },
-                animationSpec = tween(300)
+                animationSpec = tween(800)
             )
         },
         predictivePopTransitionSpec = {
             slideInHorizontally(
                 initialOffsetX = { -it },
-                animationSpec = tween(300)
+                animationSpec = tween(800)
             ) togetherWith slideOutHorizontally(
                 targetOffsetX = { it },
-                animationSpec = tween(300)
+                animationSpec = tween(800)
             )
         }
     )
