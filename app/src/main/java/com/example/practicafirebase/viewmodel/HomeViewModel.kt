@@ -72,9 +72,11 @@ class HomeViewModel: ViewModel() {
     }
 
     fun addProduct() {
+        val price = if (_uiState.value.price.isBlank()) 0.0 else _uiState.value.price.toDouble()
+
         val product = Product(
             name = _uiState.value.name,
-            price = _uiState.value.price.toDouble(),
+            price = price,
             description = _uiState.value.description,
             imageUrl = _uiState.value.imageUrl
         )

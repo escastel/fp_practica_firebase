@@ -24,13 +24,14 @@ import com.example.practicafirebase.ui.theme.PracticaFirebaseTheme
 
 @Composable
 fun CustomCard(
+    modifier: Modifier = Modifier,
     name: String,
     price: String,
     onSearchClick: () -> Unit,
     onEditClick: () -> Unit,
     onDeleteClick: () -> Unit
 ) {
-    Card{
+    Card (modifier = modifier){
         Row(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,

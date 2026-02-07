@@ -1,6 +1,8 @@
 package com.example.practicafirebase.ui.screens
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,7 +29,6 @@ import com.example.practicafirebase.ui.components.CustomHeader
 import com.example.practicafirebase.viewmodel.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
 
-// Mirar lo de borrar los campos al entrar o salir de una pantalla y añadir pequeñas animaciones
 @SuppressLint("DefaultLocale")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,6 +60,7 @@ fun HomeScreen(
                 .padding(paddingValues)
                 .padding(16.dp)
                 .fillMaxSize()
+                .animateContentSize()
         ) {
             CustomForm(
                 name = uiState.name,
@@ -81,8 +83,13 @@ fun HomeScreen(
             LazyColumn (
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ){
-                items(products) { product ->
+                items(products, key = { it.id }) { product ->
                     CustomCard(
+                        modifier = Modifier.animateItem(
+                            fadeInSpec = tween(500),
+                            fadeOutSpec = tween(500),
+                            placementSpec = tween(500)
+                        ),
                         name = product.name,
                         price = String.format("%.2f", product.price),
                         onSearchClick = {
