@@ -1,5 +1,11 @@
 package com.example.practicafirebase.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -36,76 +45,85 @@ fun RegisterScreen(
     viewModel: RegisterViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    var visible by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.cleanState()
+        visible = true
     }
 
     Scaffold { paddingValues ->
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 24.dp)
-                .padding(paddingValues)
+        AnimatedVisibility(
+            visible = visible,
+            enter = fadeIn(animationSpec = tween(1000)) +
+                    slideInHorizontally(animationSpec = tween(1000), initialOffsetX = { it / 10 })
         ) {
-            Text(
-                text = stringResource(R.string.title_register),
-                fontSize = 32.sp
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 24.dp)
+                    .padding(paddingValues)
+                    .animateContentSize()
+            ) {
+                Text(
+                    text = stringResource(R.string.title_register),
+                    fontSize = 32.sp
+                )
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            CustomOutlinedField(
-                value = uiState.email,
-                onValueChange = { viewModel.updateEmail(it) },
-                label = stringResource(R.string.label_email),
-                passwd = false,
-                error = uiState.errorEmail,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-            )
+                CustomOutlinedField(
+                    value = uiState.email,
+                    onValueChange = { viewModel.updateEmail(it) },
+                    label = stringResource(R.string.label_email),
+                    passwd = false,
+                    error = uiState.errorEmail,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+                )
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            CustomOutlinedField(
-                value = uiState.password,
-                onValueChange = { viewModel.updatePassword(it) },
-                label = stringResource(R.string.label_password),
-                passwd = true,
-                error = uiState.errorPass,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-            )
+                CustomOutlinedField(
+                    value = uiState.password,
+                    onValueChange = { viewModel.updatePassword(it) },
+                    label = stringResource(R.string.label_password),
+                    passwd = true,
+                    error = uiState.errorPass,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                )
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            CustomOutlinedField(
-                value = uiState.password2,
-                onValueChange = { viewModel.updatePassword2(it) },
-                label = stringResource(R.string.label_repeat_password),
-                passwd = true,
-                error = uiState.errorPass,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-            )
+                CustomOutlinedField(
+                    value = uiState.password2,
+                    onValueChange = { viewModel.updatePassword2(it) },
+                    label = stringResource(R.string.label_repeat_password),
+                    passwd = true,
+                    error = uiState.errorPass,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                )
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            CustomButton(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.btn_register),
-                onClick = {
-                    viewModel.createUser(auth, onRegisterClick)
-                }
-            )
+                CustomButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.btn_register),
+                    onClick = {
+                        viewModel.createUser(auth, onRegisterClick)
+                    }
+                )
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            CustomButton(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(R.string.btn_cancel),
-                onClick = onCancelClick
-            )
+                CustomButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.btn_cancel),
+                    onClick = onCancelClick
+                )
 
+            }
         }
 
         if (uiState.showErrorDialog){
